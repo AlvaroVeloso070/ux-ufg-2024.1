@@ -1,0 +1,49 @@
+<div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center bg-primary">
+    <div class="shape1"></div>
+    <div class="shape2"></div>
+    <h2 class="text-center text-light fs-1 mb-5">Perguntinhas</h2>
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-6">
+            <div>
+                <div class="info-card p-2 mb-3">
+                    <p class="question-text fs-5">{{ question.question }}</p>
+                </div>
+                <div class="answers col-md-6">
+                    <div *ngFor="let answer of question.answers">
+                        <button 
+                            class="btn answer-button" 
+                            [ngClass]="{
+                                'correct': selectedAnswer === answer && answer.correct, 
+                                'incorrect': selectedAnswer === answer && !answer.correct
+                            }"
+                            (click)="selectAnswer(answer)"
+                            [disabled]="selectedAnswer !== null">
+                            <span class="answer-option">{{ answer.option }}</span> {{ answer.text }}
+                        </button>
+                    </div>
+                </div>
+                <p *ngIf="feedback" class="feedback">{{ feedback }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="info-card p-2 mb-3">
+                <h4 class="timer">Tempo: {{ timeLeft | number:'2.0' }}</h4>
+            </div>
+            <div class="info-card p-2">
+                <h4 class="fw-bold fs-5">Ranking</h4>
+                <ul class="ranking-list">
+                    <li 
+                        *ngFor="let player of ranking; let i = index" 
+                        [ngClass]="{'top-player': i < 1, 'current-player': player.nickname === currentPlayer}" 
+                        class="ranking-item"
+                    >
+                      <span class="rank">{{ i + 1 }}</span>
+                      <span class="nickname">{{ player.nickname }}</span>
+                      <span class="score">{{ player.score }}</span>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+  
