@@ -19,6 +19,8 @@ CREATE TABLE perguntas
 (
     uuid_pergunta UUID NOT NULL,
     enunciado     VARCHAR(255),
+    categoria     VARCHAR(255) NOT NULL,
+    dificuldade   VARCHAR(255) NOT NULL,
     CONSTRAINT pk_perguntas PRIMARY KEY (uuid_pergunta)
 );
 

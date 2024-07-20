@@ -1,5 +1,7 @@
 package br.com.ufg.perguntinhas.records;
 
+import br.com.ufg.perguntinhas.enums.Categoria;
+import br.com.ufg.perguntinhas.enums.Dificuldade;
 import br.com.ufg.perguntinhas.infra.data.Pergunta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -11,7 +13,9 @@ import java.util.stream.Collectors;
 public record PerguntaRecord(
         UUID uuid,
         String enunciado,
-        Set<AlternativaRecord> alternativas
+        Set<AlternativaRecord> alternativas,
+        String dificuldade,
+        String categoria
 )
 {
 
@@ -20,6 +24,8 @@ public record PerguntaRecord(
                 .uuid(uuid)
                 .enunciado(enunciado)
                 .alternativas(alternativas.stream().map(AlternativaRecord::toEntity).collect(Collectors.toSet()))
+                .dificuldade(Dificuldade.valueOf(dificuldade))
+                .categoria(Categoria.valueOf(categoria))
                 .build();
     }
 }

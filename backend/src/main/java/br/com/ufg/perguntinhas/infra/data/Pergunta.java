@@ -1,5 +1,7 @@
 package br.com.ufg.perguntinhas.infra.data;
 
+import br.com.ufg.perguntinhas.enums.Categoria;
+import br.com.ufg.perguntinhas.enums.Dificuldade;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,4 +31,12 @@ public class Pergunta {
     )
     @JoinColumn(name = "uuid_pergunta")
     private Set<Alternativa> alternativas;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dificuldade", nullable = false)
+    private Dificuldade dificuldade;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", nullable = false)
+    private Categoria categoria;
 }
