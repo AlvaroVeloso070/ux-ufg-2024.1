@@ -8,7 +8,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/perguntinhas
     username: postgres
     password: postgres
+  flyway:
+    url: jdbc:postgresql://localhost:5432/perguntinhas
+    user: postgres
+    password: postgres
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
