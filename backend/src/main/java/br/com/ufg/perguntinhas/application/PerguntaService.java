@@ -46,6 +46,16 @@ public class PerguntaService {
             return false;
         }
 
+        if (pergunta.dificuldade().isBlank()){
+            erros.add("A pergunta \"" + pergunta.enunciado() + "\" deve ter uma dificuldade");
+            return false;
+        }
+
+        if (pergunta.categoria().isBlank()){
+            erros.add("A pergunta \"" + pergunta.enunciado() + "\" deve ter uma categoria");
+            return false;
+        }
+
         return true;
     }
 
