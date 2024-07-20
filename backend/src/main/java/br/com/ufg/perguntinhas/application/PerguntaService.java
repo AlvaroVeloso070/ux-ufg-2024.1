@@ -53,4 +53,11 @@ public class PerguntaService {
         return pergunta.alternativas().stream().filter(AlternativaRecord::correta).count() == 1L;
     }
 
+    public Set<String> save(PerguntaRecord pergunta) {
+        Set<String> erros = new HashSet<>();
+        if (perguntaValida(pergunta, erros)) {
+            perguntaRepository.save(pergunta);
+        }
+        return erros;
+    }
 }

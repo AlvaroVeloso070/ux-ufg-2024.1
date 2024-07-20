@@ -19,6 +19,15 @@ public class PerguntaController {
 
     private final PerguntaService perguntaService;
 
+    @PostMapping
+    public ResponseEntity<?> createPergunta(@RequestBody PerguntaRecord pergunta) {
+        Set<String> erros =  perguntaService.save(pergunta);
+        if (erros.isEmpty()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body(erros);
+    }
+
     @PostMapping("/batch")
     public ResponseEntity<?> createPerguntas(@RequestBody List<PerguntaRecord> perguntas) {
         Set<String> erros =  perguntaService.saveAll(perguntas);
