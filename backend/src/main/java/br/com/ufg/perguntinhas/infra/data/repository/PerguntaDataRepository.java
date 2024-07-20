@@ -1,4 +1,4 @@
-package br.com.ufg.perguntinhas.infra;
+package br.com.ufg.perguntinhas.infra.data.repository;
 
 import br.com.ufg.perguntinhas.infra.data.Pergunta;
 import org.springframework.data.repository.CrudRepository;
