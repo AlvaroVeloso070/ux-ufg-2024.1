@@ -5,4 +5,6 @@ import br.com.ufg.perguntinhas.records.PerguntaRecord;
 
 public interface PerguntaRepository {
     Pergunta save(PerguntaRecord pergunta);
+
+    PerguntaRecord getPerguntaAleatoriaJogador(String uuidJogador);
 }

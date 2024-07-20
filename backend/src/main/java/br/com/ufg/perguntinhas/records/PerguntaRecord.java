@@ -19,6 +19,16 @@ public record PerguntaRecord(
 )
 {
 
+    public static PerguntaRecord toRecord(Pergunta pergunta) {
+        return new PerguntaRecord(
+                pergunta.getUuid(),
+                pergunta.getEnunciado(),
+                pergunta.getAlternativas().stream().map(AlternativaRecord::toRecord).collect(Collectors.toSet()),
+                pergunta.getDificuldadeEnum().name(),
+                pergunta.getCategoriaEnum().name()
+        );
+    }
+
     public Pergunta toEntity() {
         return Pergunta.builder()
                 .uuid(uuid)
@@ -30,10 +40,18 @@ public record PerguntaRecord(
     }
 
     private DificuldadeEnum getEnumDificuldade(String dificuldade) {
-        return DificuldadeEnum.valueOf(dificuldade);
+        try{
+            return DificuldadeEnum.valueOf(dificuldade);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private CategoriaEnum getEnumCategoria(String categoria) {
-        return CategoriaEnum.valueOf(categoria);
+        try{
+            return CategoriaEnum.valueOf(categoria);
+        }catch (Exception e){
+            return null;
+        }
     }
 }

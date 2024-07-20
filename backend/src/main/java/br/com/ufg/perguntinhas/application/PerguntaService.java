@@ -86,4 +86,8 @@ public class PerguntaService {
         }
         return erros;
     }
+
+    public PerguntaRecord getPerguntaAleatoriaJogador(String uuidJogador) {
+        return perguntaRepository.getPerguntaAleatoriaJogador(uuidJogador);
+    }
 }

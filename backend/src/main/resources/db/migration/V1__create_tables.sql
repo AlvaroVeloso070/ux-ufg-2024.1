@@ -11,7 +11,7 @@ CREATE TABLE jogadores
 (
     uuid_jogador UUID             NOT NULL,
     nome         VARCHAR(255)     NOT NULL,
-    pontuacao    DOUBLE PRECISION NOT NULL,
+    pontuacao    DOUBLE PRECISION         ,
     CONSTRAINT pk_jogadores PRIMARY KEY (uuid_jogador)
 );
 

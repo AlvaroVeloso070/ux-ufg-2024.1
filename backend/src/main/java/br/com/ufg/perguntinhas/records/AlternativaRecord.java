@@ -19,4 +19,12 @@ public record AlternativaRecord(
                 .correta(correta)
                 .build();
     }
+
+    public static AlternativaRecord toRecord(Alternativa alternativa) {
+        return new AlternativaRecord(
+                alternativa.getUuid(),
+                alternativa.getDescricao(),
+                null
+        );
+    }
 }

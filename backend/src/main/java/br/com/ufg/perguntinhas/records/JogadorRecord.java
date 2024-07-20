@@ -13,7 +13,15 @@ public record JogadorRecord(
     public Jogador toEntity() {
         return Jogador.builder()
                 .nome(nome)
-                .uuid(UUID.fromString(uuid))
+                .uuid(getUuid())
                 .build();
+    }
+
+    private UUID getUuid() {
+        try{
+            return UUID.fromString(uuid);
+        }catch (Exception e){
+            return null;
+        }
     }
 }

@@ -23,7 +23,7 @@ public class Jogador {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "pontuacao", nullable = false)
+    @Column(name = "pontuacao")
     public Double pontuacao;
 
     @OneToMany(

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 
 @Repository
 @Transactional
@@ -19,5 +21,12 @@ public class PerguntaRepositoryImpl implements PerguntaRepository {
     @Override
     public Pergunta save(PerguntaRecord pergunta) {
         return perguntaDataRepository.save(pergunta.toEntity());
+    }
+
+    @Override
+    public PerguntaRecord getPerguntaAleatoriaJogador(String uuidJogador) {
+        var pergunta = perguntaDataRepository.getPerguntaAleatoriaJogador(UUID.fromString(uuidJogador));
+
+        return pergunta.map(PerguntaRecord::toRecord).orElse(null);
     }
 }
