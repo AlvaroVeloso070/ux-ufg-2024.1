@@ -1,7 +1,7 @@
 CREATE TABLE alternativas
 (
     uuid_alternativa UUID         NOT NULL,
-    descricao        VARCHAR(255) NOT NULL,
+    descricao        VARCHAR      NOT NULL,
     correta          BOOLEAN      NOT NULL,
     uuid_pergunta    UUID         NOT NULL,
     CONSTRAINT pk_alternativas PRIMARY KEY (uuid_alternativa)
@@ -18,9 +18,9 @@ CREATE TABLE jogadores
 CREATE TABLE perguntas
 (
     uuid_pergunta UUID NOT NULL,
-    enunciado     VARCHAR(255) NOT NULL,
-    categoria     VARCHAR(255) NOT NULL,
-    dificuldade   VARCHAR(255) NOT NULL,
+    enunciado     VARCHAR NOT NULL,
+    categoria     VARCHAR NOT NULL,
+    dificuldade   VARCHAR NOT NULL,
     CONSTRAINT pk_perguntas PRIMARY KEY (uuid_pergunta)
 );
 

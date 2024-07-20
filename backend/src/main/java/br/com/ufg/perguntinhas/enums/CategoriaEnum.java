@@ -1,8 +1,8 @@
 package br.com.ufg.perguntinhas.enums;
 
-public enum Categoria {
+public enum CategoriaEnum {
     PROGRAMACAO,
     DADOS,
-    INTERFACE_USUARIO,
+    INTERFACE,
     ARQUITETURA
 }

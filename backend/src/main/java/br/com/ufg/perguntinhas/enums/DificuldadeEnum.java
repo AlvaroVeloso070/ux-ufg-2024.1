@@ -1,6 +1,6 @@
 package br.com.ufg.perguntinhas.enums;
 
-public enum Dificuldade {
+public enum DificuldadeEnum {
     FACIL(1L),
     MEDIO(2L),
     DIFICIL(3L),
@@ -8,7 +8,7 @@ public enum Dificuldade {
 
     private long multiplicador;
 
-    Dificuldade(long multiplicador) {
+    DificuldadeEnum(long multiplicador) {
         this.multiplicador = multiplicador;
     }
 }

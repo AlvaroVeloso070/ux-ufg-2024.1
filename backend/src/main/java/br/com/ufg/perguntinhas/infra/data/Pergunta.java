@@ -1,7 +1,7 @@
 package br.com.ufg.perguntinhas.infra.data;
 
-import br.com.ufg.perguntinhas.enums.Categoria;
-import br.com.ufg.perguntinhas.enums.Dificuldade;
+import br.com.ufg.perguntinhas.enums.CategoriaEnum;
+import br.com.ufg.perguntinhas.enums.DificuldadeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +22,7 @@ public class Pergunta {
     @Column(name = "uuid_pergunta")
     private UUID uuid;
 
-    @Column(name = "enunciado", nullable = false)
+    @Column(name = "enunciado", nullable = false, columnDefinition = "TEXT")
     private String enunciado;
 
     @OneToMany(
@@ -34,9 +34,9 @@ public class Pergunta {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dificuldade", nullable = false)
-    private Dificuldade dificuldade;
+    private DificuldadeEnum dificuldadeEnum;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "categoria", nullable = false)
-    private Categoria categoria;
+    private CategoriaEnum categoriaEnum;
 }

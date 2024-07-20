@@ -1,5 +1,7 @@
 package br.com.ufg.perguntinhas.application;
 
+import br.com.ufg.perguntinhas.enums.CategoriaEnum;
+import br.com.ufg.perguntinhas.enums.DificuldadeEnum;
 import br.com.ufg.perguntinhas.infra.PerguntaRepository;
 import br.com.ufg.perguntinhas.records.AlternativaRecord;
 import br.com.ufg.perguntinhas.records.PerguntaRecord;
@@ -51,8 +53,22 @@ public class PerguntaService {
             return false;
         }
 
+        try {
+            DificuldadeEnum.valueOf(pergunta.dificuldade());
+        } catch (IllegalArgumentException e) {
+            erros.add("A dificuldade \"" + pergunta.dificuldade() + "\" não é válida");
+            return false;
+        }
+
         if (pergunta.categoria().isBlank()){
             erros.add("A pergunta \"" + pergunta.enunciado() + "\" deve ter uma categoria");
+            return false;
+        }
+
+        try {
+            CategoriaEnum.valueOf(pergunta.categoria());
+        } catch (IllegalArgumentException e) {
+            erros.add("A categoria \"" + pergunta.categoria() + "\" não é válida");
             return false;
         }
 

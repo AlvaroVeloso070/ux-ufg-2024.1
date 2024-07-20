@@ -1,7 +1,7 @@
 package br.com.ufg.perguntinhas.records;
 
-import br.com.ufg.perguntinhas.enums.Categoria;
-import br.com.ufg.perguntinhas.enums.Dificuldade;
+import br.com.ufg.perguntinhas.enums.CategoriaEnum;
+import br.com.ufg.perguntinhas.enums.DificuldadeEnum;
 import br.com.ufg.perguntinhas.infra.data.Pergunta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -24,8 +24,16 @@ public record PerguntaRecord(
                 .uuid(uuid)
                 .enunciado(enunciado)
                 .alternativas(alternativas.stream().map(AlternativaRecord::toEntity).collect(Collectors.toSet()))
-                .dificuldade(Dificuldade.valueOf(dificuldade))
-                .categoria(Categoria.valueOf(categoria))
+                .dificuldadeEnum(getEnumDificuldade(dificuldade))
+                .categoriaEnum(getEnumCategoria(categoria))
                 .build();
+    }
+
+    private DificuldadeEnum getEnumDificuldade(String dificuldade) {
+        return DificuldadeEnum.valueOf(dificuldade);
+    }
+
+    private CategoriaEnum getEnumCategoria(String categoria) {
+        return CategoriaEnum.valueOf(categoria);
     }
 }
