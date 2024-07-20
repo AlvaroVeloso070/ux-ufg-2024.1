@@ -22,14 +22,14 @@ public class Pergunta {
     @Column(name = "uuid_pergunta")
     private UUID uuid;
 
-    @Column(name = "enunciado")
+    @Column(name = "enunciado", nullable = false)
     private String enunciado;
 
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "uuid_pergunta")
+    @JoinColumn(name = "uuid_pergunta", nullable = false)
     private Set<Alternativa> alternativas;
 
     @Enumerated(EnumType.STRING)

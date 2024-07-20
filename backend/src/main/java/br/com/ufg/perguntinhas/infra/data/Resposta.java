@@ -20,17 +20,17 @@ public class Resposta {
     private UUID uuid;
 
     @ManyToOne
-    @JoinColumn(name = "uuid_pergunta")
+    @JoinColumn(name = "uuid_pergunta", nullable = false)
     private Pergunta pergunta;
 
     @ManyToOne
-    @JoinColumn(name = "uuid_alternativa")
+    @JoinColumn(name = "uuid_alternativa", nullable = false)
     private Alternativa alternativaRespondida;
 
     @ManyToOne
-    @JoinColumn(name = "uuid_jogador")
+    @JoinColumn(name = "uuid_jogador", nullable = false)
     private Jogador jogador;
 
-    @Column(name = "tempo_resposta")
+    @Column(name = "tempo_resposta", nullable = false)
     private Long tempoResposta;
 }
