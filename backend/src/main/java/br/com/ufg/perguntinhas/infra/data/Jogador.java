@@ -26,7 +26,10 @@ public class Jogador {
     @Column(name = "pontuacao", nullable = false)
     public Double pontuacao;
 
-    @OneToMany
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "uuid_jogador")
     private Set<Resposta> respostas;
 }
