@@ -5,13 +5,13 @@ spring:
   application:
     name: perguntinhas
   datasource:
-    url: ${{DATABASE_URL}}
-    username: ${{POSTGRES_USER}}
-    password: ${{POSTGRES_PASSWORD}}
+    url: ${DATABASE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   flyway:
-    url: ${{DATABASE_URL}}
-    user: ${{POSTGRES_USER}}
-    password: ${{POSTGRES_PASSWORD}}
+    url: ${DATABASE_URL}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     locations: classpath:db/migration
   jpa:
     show-sql: false
