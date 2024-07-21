@@ -29,4 +29,10 @@ public class PerguntaRepositoryImpl implements PerguntaRepository {
 
         return pergunta.map(PerguntaRecord::toRecord).orElse(null);
     }
+
+    @Override
+    public UUID getPerguntaPorAlternativa(String uuidAlternativa) {
+        var pergunta = perguntaDataRepository.getPerguntaPorAlternativa(UUID.fromString(uuidAlternativa));
+        return pergunta.map(Pergunta::getUuid).orElse(null);
+    }
 }

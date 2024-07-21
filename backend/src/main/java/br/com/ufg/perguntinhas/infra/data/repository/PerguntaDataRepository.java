@@ -16,4 +16,9 @@ public interface PerguntaDataRepository extends CrudRepository<Pergunta, UUID>{
                     "ORDER BY FUNCTION('RANDOM')" +
                     "LIMIT 1")
     Optional<Pergunta> getPerguntaAleatoriaJogador(@Param("uuidJogador") UUID uuidJogador);
+
+    @Query(value = "SELECT p FROM Pergunta p " +
+                    "JOIN p.alternativas a " +
+                    "WHERE a.uuid = :uuidAlternativa")
+    Optional<Pergunta> getPerguntaPorAlternativa(@Param("uuidAlternativa") UUID uuid);
 }
