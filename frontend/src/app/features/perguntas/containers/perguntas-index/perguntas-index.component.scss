@@ -1,10 +1,10 @@
 .container-fluid {
-    background-color: #47BDFF;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-  }
-  
+  background-color: #47BDFF;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
 .shape1 {
   position: absolute;
   top: 10%;
@@ -24,109 +24,125 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
 }
+
 .question-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 20px;
-  }
-  .info-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  .question-card {
-    margin-bottom: 20px;
-  }
-  
-  .question-text {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .answers .btn {
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    transition: background-color 0.3s ease;
-    font-size: 1em;
-  }
-  
-  .answer-button .answer-option {
-    background-color: #007bff;
-    color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    font-weight: bold;
-  }
-  
-  .answers .btn:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .info-card h4 {
-    margin-top: 20px;
-  }
-  .ranking-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .ranking-item {
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 10px 0;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s ease;
-  }
-  
-  .ranking-item.top-player {
-    background-color: #ffeb3b;
-  }
-  
-  .ranking-item.current-player {
-    background-color: #bbdefb;
-  }
-  
-  .rank {
-    font-weight: bold;
-  }
-  
-  .nickname {
-    flex-grow: 1;
-    text-align: left;
-    margin-left: 10px;
-  }
-  
-  .score {
-    font-weight: bold;
-  }
-  
-  .timer {
-    font-size: 1.5em;
-    font-weight: bold;
-  }
-  
-  .feedback {
-    font-size: 1.5em;
-    margin-top: 20px;
-  }
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+}
+
+.info-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.question-card {
+  margin-bottom: 20px;
+}
+
+.question-text {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.answers .btn {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  transition: background-color 0.3s ease;
+  font-size: 1em;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.answer-button  {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.answer-option {
+  color: black;
+}
+
+.answers .btn:hover {
+  background-color: #e0e0e0;
+}
+
+.info-card h4 {
+  margin-top: 20px;
+}
+
+.ranking-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ranking-item {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.ranking-item.top-player {
+  background-color: #ffeb3b;
+}
+
+.ranking-item.current-player {
+  background-color: #bbdefb;
+}
+
+.rank {
+  font-weight: bold;
+}
+
+.nickname {
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.score {
+  font-weight: bold;
+}
+
+.timer {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.feedback {
+  font-size: 1.5em;
+  margin-top: 20px;
+}
