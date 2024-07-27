@@ -31,6 +31,13 @@ public class PerguntaRepositoryImpl implements PerguntaRepository {
     }
 
     @Override
+    public PerguntaRecord getPerguntaPorUuid(UUID uuidPergunta) {
+        var pergunta = perguntaDataRepository.findById(uuidPergunta);
+
+        return pergunta.map(PerguntaRecord::toRecord).orElse(null);
+    }
+
+    @Override
     public UUID getPerguntaPorAlternativa(String uuidAlternativa) {
         var pergunta = perguntaDataRepository.getPerguntaPorAlternativa(UUID.fromString(uuidAlternativa));
         return pergunta.map(Pergunta::getUuid).orElse(null);
