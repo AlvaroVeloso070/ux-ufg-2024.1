@@ -24,7 +24,7 @@ import { PlayerService } from '../../../perguntas/service/player.service';
     MatSnackBarModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
   public apelido: string = '';
@@ -43,20 +43,22 @@ export class HomeComponent {
         horizontalPosition: 'center',
         panelClass: ['snackbar-warning']
       });
-    } this.playerService.createPlayer(this.apelido).subscribe(
-      (response) => {
-        localStorage.setItem('player', JSON.stringify(response));
-        this._router.navigate(['/questions']);
-      },
-      (error) => {
-        console.error('Erro ao criar jogador:', error);
-        this._snackBar.open('Erro ao criar jogador. Tente novamente.', 'Fechar', {
-          duration: 2000,
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-error']
-        });
-      }
-    );
+    } else {
+      this.playerService.createPlayer(this.apelido).subscribe(
+        (response) => {
+          localStorage.setItem('player', JSON.stringify(response));
+          this._router.navigate(['/questions']);
+        },
+        (error) => {
+          console.error('Erro ao criar jogador:', error);
+          this._snackBar.open('Erro ao criar jogador. Tente novamente.', 'Fechar', {
+            duration: 2000,
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
+          });
+        }
+      );
+    }
   }
 
   public openRegrasDialog(): void {
@@ -64,6 +66,6 @@ export class HomeComponent {
       {
         maxWidth: '35vw'
       }
-      );
+    );
   }
 }

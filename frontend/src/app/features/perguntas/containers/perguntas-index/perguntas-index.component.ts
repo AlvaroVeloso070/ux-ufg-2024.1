@@ -117,7 +117,7 @@ export class PerguntasIndexComponent implements OnInit {
     setTimeout(() => {
       this.feedback = '';
       this.selectedAnswer = null;
-      if (this.lives > 0 && this.questionsAnswered < 3) {
+      if (this.lives > 0 && this.questionsAnswered < 7) {
         const player = JSON.parse(localStorage.getItem('player') || '{}');
         this.loadQuestion(player.uuid);
       } else {
