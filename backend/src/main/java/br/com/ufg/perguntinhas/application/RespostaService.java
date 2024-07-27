@@ -25,9 +25,9 @@ public class RespostaService {
     public ResultadoRespostaRecord responder(RespostaRecord resposta) {
         UUID uuidPergunta = perguntaService.getUUIDPerguntaPorAlternativa(resposta.uuidAlternativa());
         var pergunta = perguntaService.getPerguntaPorUuid(uuidPergunta);
-        var tempo = resposta.tempoResposta();
-        var dificuldade = DificuldadeEnum.valueOf(pergunta.dificuldade()).getMultiplicador();
-        Double pontuacao = (double) (100 * (dificuldade / 4) * (1 - (tempo / 600000)));
+        double tempo = Double.valueOf(resposta.tempoResposta());
+        double dificuldade = (double) DificuldadeEnum.valueOf(pergunta.dificuldade()).getMultiplicador();
+        Double pontuacao = (100 * (dificuldade / 4) * (1 - (tempo / 600000)));
 
         if (pergunta != null) {
             respostaRepository.incluirResposta(resposta, pergunta.uuid());
