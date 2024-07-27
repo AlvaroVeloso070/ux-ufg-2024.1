@@ -92,6 +92,10 @@ public class PerguntaService {
         return perguntaRepository.getPerguntaAleatoriaJogador(uuidJogador);
     }
 
+    public PerguntaRecord getPerguntaPorUuid(UUID uuidPergunta) {
+        return perguntaRepository.getPerguntaPorUuid(uuidPergunta);
+    }
+
     public UUID getUUIDPerguntaPorAlternativa(String uuidAlternativa) {
         return perguntaRepository.getPerguntaPorAlternativa(uuidAlternativa);
     }

@@ -5,6 +5,7 @@ import br.com.ufg.perguntinhas.infra.data.Alternativa;
 import br.com.ufg.perguntinhas.infra.data.Jogador;
 import br.com.ufg.perguntinhas.infra.data.Pergunta;
 import br.com.ufg.perguntinhas.infra.data.Resposta;
+import br.com.ufg.perguntinhas.infra.data.repository.JogadorDataRepository;
 import br.com.ufg.perguntinhas.infra.data.repository.RespostaDataRepository;
 import br.com.ufg.perguntinhas.records.RespostaRecord;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class RespostaRepositoryImpl implements RespostaRepository {
 
     private final RespostaDataRepository respostaDataRepository;
+    private final JogadorDataRepository jogadorDataRepository;
 
     @Override
     public void incluirResposta(RespostaRecord respostaRecord, UUID uuidPergunta) {
@@ -39,6 +41,6 @@ public class RespostaRepositoryImpl implements RespostaRepository {
     }
 
     private Jogador getJogador(RespostaRecord respostaRecord) {
-        return Jogador.builder().uuid(UUID.fromString(respostaRecord.uuidJogador())).build();
+        return jogadorDataRepository.findById(UUID.fromString(respostaRecord.uuidJogador())).orElse(null);
     }
 }

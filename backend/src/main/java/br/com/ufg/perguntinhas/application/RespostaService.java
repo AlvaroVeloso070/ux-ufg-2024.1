@@ -1,5 +1,7 @@
 package br.com.ufg.perguntinhas.application;
 
+import br.com.ufg.perguntinhas.enums.DificuldadeEnum;
+import br.com.ufg.perguntinhas.infra.JogadorRepository;
 import br.com.ufg.perguntinhas.infra.RespostaRepository;
 import br.com.ufg.perguntinhas.records.RespostaRecord;
 import br.com.ufg.perguntinhas.records.ResultadoRespostaRecord;
@@ -17,16 +19,23 @@ public class RespostaService {
 
     private final AlternativaService alternativaService;
     private final RespostaRepository respostaRepository;
+    private final JogadorRepository jogadorRepository;
     private final PerguntaService perguntaService;
 
     public ResultadoRespostaRecord responder(RespostaRecord resposta) {
         UUID uuidPergunta = perguntaService.getUUIDPerguntaPorAlternativa(resposta.uuidAlternativa());
-        if (uuidPergunta != null) {
-            respostaRepository.incluirResposta(resposta, uuidPergunta);
+        var pergunta = perguntaService.getPerguntaPorUuid(uuidPergunta);
+        double tempo = Double.valueOf(resposta.tempoResposta());
+        double dificuldade = (double) DificuldadeEnum.valueOf(pergunta.dificuldade()).getMultiplicador();
+        Double pontuacao = (100 * (dificuldade / 4) * (1 - (tempo / 600000)));
 
-            if (alternativaService.isAlternativaCorreta(resposta.uuidAlternativa())){
-                return new ResultadoRespostaRecord(CORRETA.name(), 0.0);
-            }else {
+        if (pergunta != null) {
+            respostaRepository.incluirResposta(resposta, pergunta.uuid());
+
+            if (alternativaService.isAlternativaCorreta(resposta.uuidAlternativa())) {
+                jogadorRepository.updatePontuacaoJogador(resposta.uuidJogador(), pontuacao);
+                return new ResultadoRespostaRecord(CORRETA.name(), pontuacao);
+            } else {
                 return new ResultadoRespostaRecord(ERRADA.name(), 0.0);
             }
         }

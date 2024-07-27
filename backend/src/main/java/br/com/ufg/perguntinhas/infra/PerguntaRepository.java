@@ -10,5 +10,7 @@ public interface PerguntaRepository {
 
     PerguntaRecord getPerguntaAleatoriaJogador(String uuidJogador);
 
+    PerguntaRecord getPerguntaPorUuid(UUID uuidPergunta);
+
     UUID getPerguntaPorAlternativa(String uuidAlternativa);
 }
