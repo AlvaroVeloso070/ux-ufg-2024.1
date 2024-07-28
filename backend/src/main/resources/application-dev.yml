@@ -5,11 +5,11 @@ spring:
   application:
     name: perguntinhas
   datasource:
-    url: jdbc:postgresql://localhost:5432/perguntinhas
+    url: jdbc:postgresql://localhost:5454/perguntinhas
     username: postgres
     password: postgres
   flyway:
-    url: jdbc:postgresql://localhost:5432/perguntinhas
+    url: jdbc:postgresql://localhost:5454/perguntinhas
     user: postgres
     password: postgres
     locations: classpath:db/migration
@@ -17,3 +17,6 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: none
+  web:
+    resources:
+      static-locations: classpath:/static/

@@ -9,7 +9,7 @@ RUN npm install -f
 COPY frontend/ .
 
 # Compila o frontend
-RUN npm run build -- --output-path=dist
+RUN npm run build --prod --output-path=dist
 
 # Etapa de build do backend
 FROM maven:3.9.8-amazoncorretto-21 AS backend-build
@@ -21,13 +21,16 @@ COPY backend/mvnw .
 COPY backend/mvnw.cmd .
 COPY backend/.mvn .mvn
 
-COPY --from=frontend-build /frontend/dist /backend/src/main/resources/static
+RUN mkdir -p /backend/src/main/resources/static
+
+COPY --from=frontend-build /frontend/dist/browser/. /backend/src/main/resources/static
 
 COPY backend/src src
 
 # Dá permissão de execução ao script mvnw
 RUN chmod +x mvnw
 
+# limpa variável de ambiente que está causando conflito
 ENV MAVEN_CONFIG=
 
 # Compila o backend
