@@ -27,6 +27,8 @@ COPY backend/src ./src
 # Copiar os arquivos buildados do frontend para a pasta resources/static do backend
 COPY --from=build-frontend /app/frontend/dist/frontend/browser /app/src/main/resources/static
 
+RUN chmod -R 755 /app/src/main/resources/static
+
 # Buildar o backend
 RUN mvn clean package -DskipTests
 
