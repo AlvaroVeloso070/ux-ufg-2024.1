@@ -28,6 +28,8 @@ COPY backend/src src
 # Dá permissão de execução ao script mvnw
 RUN chmod +x mvnw
 
+ENV MAVEN_CONFIG=
+
 # Compila o backend
 RUN ./mvnw clean package -DskipTests
 
