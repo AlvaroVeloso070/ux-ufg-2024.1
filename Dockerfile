@@ -1,28 +1,35 @@
 # Etapa de build do backend
-FROM maven:3.8.6-openjdk-21-slim AS backend-build
+FROM maven:3.9.8-amazoncorretto-21 AS backend-build
 WORKDIR /backend
 
 # Copia o código-fonte do backend
-COPY backend/pom.xml backend/.mvn backend/mvnw backend/mvnw.cmd ./
-COPY backend/src ./src
+COPY backend/pom.xml .
+COPY backend/mvnw .
+COPY backend/mvnw.cmd .
+COPY backend/.mvn .mvn
+COPY backend/src src
+
+# Dá permissão de execução ao script mvnw
+RUN chmod +x mvnw
 
 # Compila o backend
-RUN ./mvnw package -DskipTests
+RUN ./mvnw clean package -DskipTests
 
 # Etapa de build do frontend
-FROM node:18-alpine AS frontend-build
+FROM node:22 AS frontend-build
 WORKDIR /frontend
 
 # Copia o código-fonte do frontend
-COPY frontend/package.json frontend/package-lock.json ./
+COPY frontend/package.json .
+COPY frontend/package-lock.json .
 RUN npm install
-COPY frontend/ ./
+COPY frontend/ .
 
 # Compila o frontend
 RUN npm run build -- --output-path=dist
 
 # Etapa final: Combina backend e frontend em um contêiner de produção
-FROM openjdk:21-jdk-slim
+FROM amazoncorretto:17 AS final
 WORKDIR /app
 
 # Copia o JAR do backend
