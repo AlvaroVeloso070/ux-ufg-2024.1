@@ -1,3 +1,17 @@
+# Etapa de build do backend
+FROM maven:3.9.8-amazoncorretto-21 AS backend-build
+WORKDIR /backend
+
+# Copia o código-fonte do backend
+COPY backend/pom.xml .
+COPY backend/mvnw .
+COPY backend/mvnw.cmd .
+COPY backend/.mvn .mvn
+COPY backend/src src
+
+ENV MAVEN_CONFIG=
+
+# Dá permissão de execução ao script mvnw
 RUN chmod +x mvnw
 
 # Compila o backend
