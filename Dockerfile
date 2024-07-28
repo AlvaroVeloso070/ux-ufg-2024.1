@@ -23,7 +23,7 @@ COPY backend/.mvn .mvn
 
 RUN mkdir -p /backend/src/main/resources/static
 
-COPY --from=frontend-build /frontend/dist/browser/. /backend/src/main/resources/static
+COPY --from=frontend-build dist/browser/. /backend/src/main/resources/static
 
 COPY backend/src src
 
