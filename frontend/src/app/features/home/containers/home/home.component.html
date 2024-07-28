@@ -1,13 +1,12 @@
 <div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center bg-primary">
-    <div class="shape1"></div>
-    <div class="shape2"></div>
-    <h1 class="title mb-4">Perguntinhas</h1>
-    <div class="card text-center p-4">
-      <div class="mb-3">
-        <input mat-input type="text" class="rounded-0 form-control" placeholder="Apelido" [(ngModel)]="apelido"/>
-      </div> 
-      <button (click)="jogar()" class="start-game-btn">Jogar</button>
+  <div class="shape1"></div>
+  <div class="shape2"></div>
+  <h1 class="title mb-4">Perguntinhas</h1>
+  <div class="card text-center p-4">
+    <div class="mb-3">
+      <input mat-input type="text" class="rounded-0 form-control" placeholder="Apelido" [(ngModel)]="apelido" (keydown.enter)="jogar()"/>
     </div>
-    <button (click)="openRegrasDialog()" class="btn btn-light position-absolute top-0 end-0 m-3">REGRAS</button>
+    <button (click)="jogar()" class="start-game-btn">Jogar</button>
+  </div>
+  <button (click)="openRegrasDialog()" class="btn btn-light position-absolute top-0 end-0 m-3">REGRAS</button>
 </div>
-  

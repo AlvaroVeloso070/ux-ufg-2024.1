@@ -9,6 +9,7 @@ import { RegrasModalComponent } from '../../components/regras-modal/regras-modal
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PlayerService } from '../../../perguntas/service/player.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ import { Router } from '@angular/router';
     MatSnackBarModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
   public apelido: string = '';
@@ -31,7 +32,8 @@ export class HomeComponent {
   constructor(
     private _dialog: MatDialog, 
     private _snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private playerService: PlayerService
   ) {}
 
   public jogar(): void {
@@ -42,7 +44,20 @@ export class HomeComponent {
         panelClass: ['snackbar-warning']
       });
     } else {
-      this._router.navigate(['/questions']);
+      this.playerService.createPlayer(this.apelido).subscribe(
+        (response) => {
+          localStorage.setItem('player', JSON.stringify(response));
+          this._router.navigate(['/questions']);
+        },
+        (error) => {
+          console.error('Erro ao criar jogador:', error);
+          this._snackBar.open('Erro ao criar jogador. Tente novamente.', 'Fechar', {
+            duration: 2000,
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
+          });
+        }
+      );
     }
   }
 
@@ -51,6 +66,6 @@ export class HomeComponent {
       {
         maxWidth: '35vw'
       }
-      );
+    );
   }
 }

@@ -2,23 +2,24 @@
     <div class="shape1"></div>
     <div class="shape2"></div>
     <h2 class="text-center text-light fs-1 mb-5">Perguntinhas</h2>
-    <div class="row w-100 justify-content-center">
+    <h4 class="text-center text-light">Bem-vindo, {{ playerName }}</h4>
+    <div class="row w-100 justify-content-center" *ngIf="question">
         <div class="col-md-6">
             <div>
                 <div class="info-card p-2 mb-3">
-                    <p class="question-text fs-5">{{ question.question }}</p>
+                    <p class="question-text fs-5">{{ question.enunciado }}</p>
                 </div>
-                <div class="answers col-md-6">
-                    <div *ngFor="let answer of question.answers">
+                <div class="answers col-md-12">
+                    <div *ngFor="let answer of question.alternativas">
                         <button 
                             class="btn answer-button" 
                             [ngClass]="{
-                                'correct': selectedAnswer === answer && answer.correct, 
-                                'incorrect': selectedAnswer === answer && !answer.correct
+                                'correct': selectedAnswer === answer, 
+                                'incorrect': selectedAnswer !== answer && selectedAnswer !== null
                             }"
                             (click)="selectAnswer(answer)"
                             [disabled]="selectedAnswer !== null">
-                            <span class="answer-option">{{ answer.option }}</span> {{ answer.text }}
+                            <span class="answer-option">{{ answer.descricao }}</span>
                         </button>
                     </div>
                 </div>
@@ -34,16 +35,15 @@
                 <ul class="ranking-list">
                     <li 
                         *ngFor="let player of ranking; let i = index" 
-                        [ngClass]="{'top-player': i < 1, 'current-player': player.nickname === currentPlayer}" 
+                        [ngClass]="{'top-player': i < 1, 'current-player': player.nickname === currentPlayer.nickname}" 
                         class="ranking-item"
                     >
                       <span class="rank">{{ i + 1 }}</span>
                       <span class="nickname">{{ player.nickname }}</span>
                       <span class="score">{{ player.score }}</span>
                     </li>
-                  </ul>
+                </ul>
             </div>
         </div>
     </div>
-  </div>
-  
+</div>
