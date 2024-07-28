@@ -1,47 +1,41 @@
-# Etapa de build do frontend
-FROM node:22 AS frontend-build
-WORKDIR /frontend
+# Etapa 1: Build do Frontend
+FROM node:22 as build-frontend
 
-# Copia o código-fonte do frontend
-COPY frontend/package.json .
-COPY frontend/package-lock.json .
-RUN npm install -f
-COPY frontend/ .
+WORKDIR /app/frontend
 
-# Compila o frontend
-RUN npm run build --prod --output-path=dist
+# Copiar todos os arquivos do frontend
+COPY frontend/package*.json ./
+COPY frontend/angular.json ./
+COPY frontend/tsconfig*.json ./
+COPY frontend/src ./src
+
+# Instalar as dependências e buildar o frontend
+RUN npm install --force
+RUN npm run build --prod
 
 # Etapa de build do backend
-FROM maven:3.9.8-amazoncorretto-21 AS backend-build
+FROM maven:3.9.8-amazoncorretto-21 as build-backend
 WORKDIR /backend
 
 # Copia o código-fonte do backend
+WORKDIR /app
+
+# Copiar todos os arquivos do backend
 COPY backend/pom.xml .
-COPY backend/mvnw .
-COPY backend/mvnw.cmd .
-COPY backend/.mvn .mvn
+COPY backend/src ./src
 
-RUN mkdir -p /backend/src/main/resources/static
+# Copiar os arquivos buildados do frontend para a pasta resources/static do backend
+COPY --from=build-frontend /app/frontend/dist/frontend/browser /app/src/main/resources/static
 
-COPY --from=frontend-build dist/browser/. /backend/src/main/resources/static
-
-COPY backend/src src
-
-# Dá permissão de execução ao script mvnw
-RUN chmod +x mvnw
-
-# limpa variável de ambiente que está causando conflito
-ENV MAVEN_CONFIG=
-
-# Compila o backend
-RUN ./mvnw clean package -DskipTests
+# Buildar o backend
+RUN mvn clean package -DskipTests
 
 # Etapa final: Combina backend e frontend em um contêiner de produção
 FROM maven:3.9.8-amazoncorretto-21 AS final
 WORKDIR /app
 
-# Copia o JAR do backend
-COPY --from=backend-build /backend/target/*.jar app.jar
+# Copiar o JAR do backend buildado
+COPY --from=build-backend /app/target/*.jar app.jar
 
 # Expõe a porta que o Spring Boot usa
 EXPOSE 8080
