@@ -1,48 +1,43 @@
+# Etapa 1: Build do Frontend
+FROM node:22 as build-frontend
+
+WORKDIR /app/frontend
+
+# Copiar todos os arquivos do frontend
+COPY frontend/package*.json ./
+COPY frontend/angular.json ./
+COPY frontend/tsconfig*.json ./
+COPY frontend/src ./src
+
+# Instalar as dependências e buildar o frontend
+RUN npm install --force
+RUN npm run build --prod
+
 # Etapa de build do backend
-FROM maven:3.9.8-amazoncorretto-21 AS backend-build
+FROM maven:3.9.8-amazoncorretto-21 as build-backend
 WORKDIR /backend
 
 # Copia o código-fonte do backend
+WORKDIR /app
+
+# Copiar todos os arquivos do backend
 COPY backend/pom.xml .
-COPY backend/mvnw .
-COPY backend/mvnw.cmd .
-COPY backend/.mvn .mvn
-COPY backend/src src
+COPY backend/src ./src
 
-ENV MAVEN_CONFIG=
+# Copiar os arquivos buildados do frontend para a pasta resources/static do backend
+COPY --from=build-frontend /app/frontend/dist/frontend/browser /app/src/main/resources/static
 
-# Dá permissão de execução ao script mvnw
-RUN chmod +x mvnw
+RUN chmod -R 755 /app/src/main/resources/static
 
-# Compila o backend
-RUN ./mvnw clean package -DskipTests
-
-# Etapa de build do frontend
-FROM node:22 AS frontend-build
-WORKDIR /frontend
-
-# Copia o código-fonte do frontend
-COPY frontend/package.json .
-COPY frontend/package-lock.json .
-RUN npm install -f
-COPY frontend/ .
-
-# Compila o frontend
-RUN npm run build -- --output-path=dist
+# Buildar o backend
+RUN mvn clean package -DskipTests
 
 # Etapa final: Combina backend e frontend em um contêiner de produção
 FROM maven:3.9.8-amazoncorretto-21 AS final
 WORKDIR /app
 
-# Copia o JAR do backend
-COPY --from=backend-build /backend/target/*.jar app.jar
-
-# Copia os arquivos compilados do frontend para o diretório estático do Spring Boot
-COPY --from=frontend-build /frontend/dist /app/static
-
-# Configura o Spring Boot para servir os arquivos estáticos do frontend
-RUN mkdir -p /app/src/main/resources/static
-COPY --from=frontend-build /frontend/dist /app/src/main/resources/static
+# Copiar o JAR do backend buildado
+COPY --from=build-backend /app/target/*.jar app.jar
 
 # Expõe a porta que o Spring Boot usa
 EXPOSE 8080
