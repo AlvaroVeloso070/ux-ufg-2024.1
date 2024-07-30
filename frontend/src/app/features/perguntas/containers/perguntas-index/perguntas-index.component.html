@@ -12,12 +12,13 @@
       <div class="row w-100 justify-content-center" >
           <div class="col-md-8" *ngIf="question">
               <div class="info-card p-2 mb-2 mt-1">
-                  <p class="question-text fs-4 fw-medium m-3 lh-base">{{ question.enunciado }}</p>
+                  <p class="question-text fs-4 fw-medium m-3 lh-base h-auto">{{ question.enunciado }}</p>
+                  <p class="question-text fs-6 fw-medium m-3 lh-base">Tema: {{question.categoria | titlecase}} | Dificuldade: {{question.dificuldade | titlecase}}</p>
               </div>
               <div class="answers h-75 p-2">
                   <div *ngFor="let answer of question.alternativas; index as i">
                       <button
-                          class="btn answer-button p-4 w-50"
+                          class="btn answer-button p-4 w-50 h-auto"
                           [ngClass]="{
                               'correct': selectedAnswer === answer,
                               'incorrect': selectedAnswer !== answer && selectedAnswer !== null
