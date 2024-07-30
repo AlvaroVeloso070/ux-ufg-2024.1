@@ -29,9 +29,12 @@ public class JogadorRepositoryImpl implements JogadorRepository {
         var jogador = jogadorDataRepository.findById(UUID.fromString(uuid)).orElse(null);
 
         if (jogador != null) {
+            jogador.setPontuacao(jogador.getPontuacao() + pontuacao);
 
-            jogador.setPontuacao(pontuacao);
-            jogador.setRecordePontuacao(pontuacao > jogador.getRecordePontuacao() ? pontuacao : jogador.getRecordePontuacao());
+            if (jogador.getPontuacao() > jogador.getRecordePontuacao()){
+                jogador.setRecordePontuacao(jogador.getPontuacao());
+            }
+
             jogadorDataRepository.save(jogador);
         }
     }
