@@ -1,21 +1,21 @@
 <div class="ranking-page">
   <h1 class="fs-1 mb-5 logo-font">Perguntinhas</h1>
   <div class="podium">
-    <div class="podium-item second">
+    <div class="podium-item second" *ngIf="ranking.length > 1">
       <span class="name">{{ ranking[1].nickname }}</span>
-      <div class="score">{{ ranking[1].score  | number : '1.1-1' }}</div>
+      <div class="score">{{ ranking[1].score | number : '1.1-1' }}</div>
       <div class="pentagon silver">2°</div>
       <img src="assets/silver.png" class="medal">
     </div>
-    <div class="podium-item first">
+    <div class="podium-item first" *ngIf="ranking.length > 0">
       <span class="name">{{ ranking[0].nickname }}</span>
       <div class="score">{{ ranking[0].score | number : '1.1-1' }}</div>
       <div class="pentagon gold">1°</div>
       <img src="assets/gold-medal.svg" class="medal">
     </div>
-    <div class="podium-item third">
+    <div class="podium-item third" *ngIf="ranking.length > 2">
       <span class="name">{{ ranking[2].nickname }}</span>
-      <div class="score">{{ ranking[2].score  | number : '1.1-1'}}</div>
+      <div class="score">{{ ranking[2].score | number : '1.1-1' }}</div>
       <div class="pentagon bronze">3°</div>
       <img src="assets/bronze-medal.svg" class="medal">
     </div>
