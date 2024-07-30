@@ -14,6 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults())
+                .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/static/**").permitAll()
                         .anyRequest().permitAll()
