@@ -4,31 +4,23 @@ import { PlayerService } from '../../service/player.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface Player {
-  nickname: string;
-  score: number;
-}
-
-interface Question {
-  uuid: string;
-  enunciado: string;
-  alternativas: Alternative[];
-  dificuldade: string;
-  categoria: string;
-}
-
-interface Alternative {
-  uuid: string;
-  descricao: string;
-}
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {Alternative, Player, Question} from "../../service/interfaces/perguntas.interface";
+import {MatButtonModule} from "@angular/material/button";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-perguntas-index',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule 
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './perguntas-index.component.html',
   styleUrls: ['./perguntas-index.component.scss']
@@ -41,47 +33,46 @@ export class PerguntasIndexComponent implements OnInit {
   interval: any;
   selectedAnswer: Alternative | null = null;
   feedback: string = '';
-  playerName: string = '';
   questionsAnswered: number = 0;
-  currentPlayer: Player = { nickname: '', score: 0 };
+  currentPlayer: Player = { uuid: '', nickname: '', score: 0 };
+  playerPosition = 0;
   ranking: Player[] = [];
+
+  public get heartLives(){
+    return Array(3).fill(0).map((_, index) => index < this.lives ? 1 : 0);
+  }
 
   constructor(
     private perguntaService: PerguntaService,
     private playerService: PlayerService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
     const player = JSON.parse(localStorage.getItem('player') || '{}');
-    this.playerName = player.nome || 'Jogador';
-    this.currentPlayer.nickname = player.nome;
-    this.currentPlayer.score = player.pontuacao || 0;
+    this.currentPlayer = {
+      uuid: player.uuid,
+      nickname: player.nome || 'Jogador',
+      score: player.pontuacao || 0,
+    };
     this.lives = 3;
     this.score = 0;
 
-    this.initializeFakePlayers();
     this.loadQuestion(player.uuid);
     this.updateRanking();
   }
 
-  initializeFakePlayers() {
-    const fakePlayers = [
-      { nickname: 'Luciana', score: 0 },
-      { nickname: 'Eduardo', score: 0 },
-      { nickname: 'Ana', score: 0 }
-    ];
-
-    fakePlayers.forEach(fakePlayer => {
-      const existingPlayer = this.ranking.find(p => p.nickname === fakePlayer.nickname);
-      if (!existingPlayer) {
-        this.ranking.push(fakePlayer);
-      }
-    });
-  }
-
   loadQuestion(uuidJogador: string) {
     this.perguntaService.getQuestion(uuidJogador).subscribe((pergunta: Question) => {
+      if(!pergunta){
+        this._snackBar.open('Nenhuma pergunta não encontrada.', 'Fechar', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-warning']
+        });
+        this.checkAnswer(false);
+      }
       this.question = pergunta;
       this.timeLeft = 60;
       this.startTimer();
@@ -93,38 +84,57 @@ export class PerguntasIndexComponent implements OnInit {
       if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
+        this.getRanking();
         this.checkAnswer(false);
       }
     }, 1000);
   }
 
-  checkAnswer(correct: boolean) {
+  checkAnswer(correct: boolean, score?: number) {
     clearInterval(this.interval);
     this.questionsAnswered++;
-    if (correct) {
-      this.score += this.question?.dificuldade === 'FACIL' ? 100 : this.question?.dificuldade === 'MEDIO' ? 200 : this.question?.dificuldade === 'DIFICIL' ? 300 : 400;
-      this.feedback = 'Correto!';
-    } else {
+    if (correct && score) {
+      this.score += score;
+      this.showFeedbackAnswer('correct', score);
+    }
+    else {
       this.lives--;
-      this.feedback = 'Incorreto!';
+      this.showFeedbackAnswer('wrong');
     }
 
     this.currentPlayer.score = this.score;
     this.updateRanking();
 
-    this.updateFakePlayersScore();
-
     setTimeout(() => {
       this.feedback = '';
       this.selectedAnswer = null;
-      if (this.lives > 0 && this.questionsAnswered < 7) {
+      if (this.lives > 0 && this.questionsAnswered < 10) {
         const player = JSON.parse(localStorage.getItem('player') || '{}');
         this.loadQuestion(player.uuid);
-      } else {
+      }
+      else {
         this.saveRanking();
         this.router.navigate(['/ranking']);
       }
-    }, 2000);
+    }, 2500);
+  }
+
+  showFeedbackAnswer(feedback: string, score?: number){
+    this._snackBar.dismiss();
+    if(feedback === 'correct' && score){
+      this._snackBar.open(`Resposta certa! Você obteve ${this._truncateNumber(score)} pontos`, 'Fechar', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-success']
+      });
+    }
+    else if(feedback === 'wrong'){
+      this._snackBar.open('Resposta errada! Você não obteve pontos', 'Fechar', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-warning']
+      });
+    }
   }
 
   selectAnswer(answer: Alternative) {
@@ -134,39 +144,47 @@ export class PerguntasIndexComponent implements OnInit {
       uuidJogador: player.uuid,
       uuidAlternativa: answer.uuid,
       tempoResposta: this.timeLeft
-    }).subscribe(result => {
-      this.checkAnswer(result.resultado === 'CORRETA');
+    }).subscribe(answer => {
+      this.checkAnswer(answer.resultado === 'CORRETA', this._truncateNumber(answer.pontuacao));
     });
   }
 
   updateRanking() {
-    const existingPlayer = this.ranking.find(p => p.nickname === this.currentPlayer.nickname);
-    if (existingPlayer) {
-      existingPlayer.score = this.currentPlayer.score;
-    } else {
-      this.ranking.push({ nickname: this.currentPlayer.nickname, score: this.currentPlayer.score });
-    }
-
-    this.ranking.sort((a, b) => b.score - a.score);
+    setTimeout(() => {
+      this.getRanking();
+    }, 2000);
   }
 
-  updateFakePlayersScore() {
-    this.ranking.forEach(player => {
-      if (['Luciana', 'Eduardo', 'Ana'].includes(player.nickname)) {
-        const randomScoreIncrement = this.getRandomScoreIncrement();
-        player.score += randomScoreIncrement;
+  getRanking() {
+    this.playerService.getRanking().subscribe(ranking => {
+      this.playerPosition = ranking.findIndex(p => p.uuid === this.currentPlayer.uuid) + 1;
+      const new_ranking: Player[] = ranking.sort((a, b) => b.pontuacao - a.pontuacao).slice(0, 4).map(item => ({
+        uuid: item.uuid,
+        nickname: item.nomeJogador,
+        score: item.pontuacao
+      }));
+      if(!new_ranking.find(p => p.uuid === this.currentPlayer.uuid)){
+        new_ranking.pop();
+        new_ranking.push(this.currentPlayer);
       }
+      this.ranking = new_ranking;
     });
-
-    this.ranking.sort((a, b) => b.score - a.score);
-  }
-
-  getRandomScoreIncrement() {
-    const increments = [100, 200, 300, 400];
-    return increments[Math.floor(Math.random() * increments.length)];
   }
 
   saveRanking() {
     localStorage.setItem('ranking', JSON.stringify(this.ranking));
   }
+
+  mapToAlternativeLetter(index: number){
+    return String.fromCharCode('a'.charCodeAt(0) + index);
+  }
+
+  checkCurrentPlayer(player: Player) {
+    return player.uuid === this.currentPlayer.uuid;
+  }
+
+  private _truncateNumber(value: number){
+    return Math.floor(value* 10) / 10;
+  }
+
 }

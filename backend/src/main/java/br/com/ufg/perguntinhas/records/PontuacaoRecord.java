@@ -13,12 +13,4 @@ public record PontuacaoRecord(String uuid, String nomeJogador, Double pontuacao)
                 jogador.getRecordePontuacao()
         );
     }
-
-    public static PontuacaoRecord toRecord(Jogador jogador) {
-        return new PontuacaoRecord(
-                jogador.getUuid().toString(),
-                jogador.getNome(),
-                jogador.getPontuacao()
-        );
-    }
 }

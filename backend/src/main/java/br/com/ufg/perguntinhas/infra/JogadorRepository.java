@@ -2,6 +2,7 @@ package br.com.ufg.perguntinhas.infra;
 
 import br.com.ufg.perguntinhas.records.JogadorRecord;
 import br.com.ufg.perguntinhas.records.PontuacaoRecord;
+import br.com.ufg.perguntinhas.records.PontuacaoRelativa;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,5 +15,5 @@ public interface JogadorRepository {
 
     List<PontuacaoRecord> buscarRanking();
 
-    PontuacaoRecord buscarPontuacaoJogador( String uuid);
+    PontuacaoRelativa buscarPontuacaoJogador(String uuid);
 }

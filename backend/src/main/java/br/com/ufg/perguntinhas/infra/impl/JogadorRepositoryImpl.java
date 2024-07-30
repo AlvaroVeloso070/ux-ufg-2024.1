@@ -4,12 +4,15 @@ import br.com.ufg.perguntinhas.infra.JogadorRepository;
 import br.com.ufg.perguntinhas.infra.data.repository.JogadorDataRepository;
 import br.com.ufg.perguntinhas.records.JogadorRecord;
 import br.com.ufg.perguntinhas.records.PontuacaoRecord;
+import br.com.ufg.perguntinhas.records.PontuacaoRelativa;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Repository
 @Transactional
@@ -41,11 +44,21 @@ public class JogadorRepositoryImpl implements JogadorRepository {
 
     @Override
     public List<PontuacaoRecord> buscarRanking() {
-        return jogadorDataRepository.findAll().stream().map(PontuacaoRecord::toRankRecord).toList();
+        return jogadorDataRepository.buscarRanking(PageRequest.of(0, 4)).stream().map(PontuacaoRecord::toRankRecord).toList();
     }
 
     @Override
-    public PontuacaoRecord buscarPontuacaoJogador(String uuid) {
-        return jogadorDataRepository.findById(UUID.fromString(uuid)).map(PontuacaoRecord::toRecord).orElse(null);
+    public PontuacaoRelativa buscarPontuacaoJogador(String uuid) {
+        var list = jogadorDataRepository.buscarRanking(PageRequest.of(0, Integer.MAX_VALUE));
+
+        return IntStream.range(0, list.size())
+                .filter(i -> list.get(i).getUuid().toString().equals(uuid))
+                .mapToObj(i -> new PontuacaoRelativa(
+                        list.get(i).getUuid().toString(),
+                        list.get(i).getNome(),
+                        list.get(i).getPontuacao(),
+                        i))
+                .findFirst()
+                .orElse(null);
     }
 }
