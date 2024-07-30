@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import {PlayerResponse} from "./interfaces/perguntas.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-  private apiUrl = 'http://localhost:8080'; 
+  private apiUrl = 'https://perguntinhas.up.railway.app';
 
   constructor(private http: HttpClient) {}
 
-  createPlayer(name: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/jogador`, { nome: name });
+  createPlayer(name: string): Observable<PlayerResponse> {
+    return this.http.post<PlayerResponse>(`${this.apiUrl}/jogador`, { nome: name });
   }
 
-  getRanking(player: any): Observable<any> {
-    const ranking = JSON.parse(localStorage.getItem('ranking') || '[]');
-    return of(ranking);
+  getRanking(): Observable<PlayerResponse[]> {
+    return this.http.get<PlayerResponse[]>(`${this.apiUrl}/jogador/pontuacao`);
   }
 }

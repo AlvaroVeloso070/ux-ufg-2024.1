@@ -1,10 +1,10 @@
 <div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center bg-primary">
   <div class="shape1"></div>
   <div class="shape2"></div>
-  <h1 class="title mb-4">Perguntinhas</h1>
+  <h1 class="fs-1 title mb-4 logo-font">Perguntinhas</h1>
   <div class="card text-center p-4">
     <div class="mb-3">
-      <input mat-input type="text" class="rounded-0 form-control" placeholder="Apelido" [(ngModel)]="apelido" (keydown.enter)="jogar()"/>
+      <input mat-input maxlength="10" type="text" class="rounded-0 form-control" placeholder="Apelido" [(ngModel)]="apelido" (keydown.enter)="jogar()"/>
     </div>
     <button (click)="jogar()" class="start-game-btn">Jogar</button>
   </div>

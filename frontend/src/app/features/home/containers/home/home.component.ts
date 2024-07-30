@@ -28,9 +28,9 @@ import { PlayerService } from '../../../perguntas/service/player.service';
 })
 export class HomeComponent {
   public apelido: string = '';
-  
+
   constructor(
-    private _dialog: MatDialog, 
+    private _dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private _router: Router,
     private playerService: PlayerService
@@ -44,13 +44,13 @@ export class HomeComponent {
         panelClass: ['snackbar-warning']
       });
     } else {
+      this.apelido = this.apelido.slice(0, 10);
       this.playerService.createPlayer(this.apelido).subscribe(
         (response) => {
           localStorage.setItem('player', JSON.stringify(response));
           this._router.navigate(['/questions']);
         },
         (error) => {
-          console.error('Erro ao criar jogador:', error);
           this._snackBar.open('Erro ao criar jogador. Tente novamente.', 'Fechar', {
             duration: 2000,
             horizontalPosition: 'center',
@@ -62,9 +62,8 @@ export class HomeComponent {
   }
 
   public openRegrasDialog(): void {
-    this._dialog.open(RegrasModalComponent,
-      {
-        maxWidth: '35vw'
+    this._dialog.open(RegrasModalComponent, {
+        panelClass: 'dialog-responsive'
       }
     );
   }

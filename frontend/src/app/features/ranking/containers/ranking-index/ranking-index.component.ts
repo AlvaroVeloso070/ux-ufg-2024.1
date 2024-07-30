@@ -1,13 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import confetti from 'canvas-confetti';
+import {PlayerService} from "../../../perguntas/service/player.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Player} from "../../../perguntas/service/interfaces/perguntas.interface";
 
-interface Player {
-  nickname: string;
-  score: number;
-}
 
 @Component({
   selector: 'app-ranking-index',
@@ -21,20 +20,34 @@ export class RankingIndexComponent implements OnInit, AfterViewInit {
   currentPlayer: Player = { nickname: '', score: 0 };
   playerPosition: number = 0;
 
-  ngOnInit(): void {
-    const player = JSON.parse(localStorage.getItem('player') || '{}');
-    this.ranking = JSON.parse(localStorage.getItem('ranking') || '[]');
+  constructor(
+    private _playerService: PlayerService,
+    private _snackBar: MatSnackBar,
+  ) { }
 
-    this.currentPlayer = this.ranking.find(p => p.nickname === player.nome) || { nickname: '', score: 0 };
-    this.playerPosition = this.ranking.findIndex(p => p.nickname === this.currentPlayer.nickname) + 1;
+  ngOnInit(): void {
+    this.getRanking();
   }
 
   ngAfterViewInit(): void {
     this.launchConfetti();
   }
 
+  getRanking() {
+    this._playerService.getRanking().subscribe(ranking => {
+      const new_ranking = ranking.sort((a, b) => b.pontuacao - a.pontuacao).map(item => ({
+        nickname: item.nomeJogador,
+        score: item.pontuacao
+      }));
+      this.ranking = new_ranking;
+      const player = JSON.parse(localStorage.getItem('player') || '{}');
+      this.currentPlayer = this.ranking.find(p => p.uuid === player.uuid) || { nickname: '', score: 0 };
+      this.playerPosition = this.ranking.findIndex(p => p.uuid === this.currentPlayer.uuid) + 1;
+    });
+  }
+
   launchConfetti(): void {
-    const duration = 5 * 1000; 
+    const duration = 5 * 1000;
     const end = Date.now() + duration;
 
     const frame = () => {
