@@ -3,6 +3,7 @@ package br.com.ufg.perguntinhas.application;
 import br.com.ufg.perguntinhas.infra.JogadorRepository;
 import br.com.ufg.perguntinhas.records.JogadorRecord;
 import br.com.ufg.perguntinhas.records.PontuacaoRecord;
+import br.com.ufg.perguntinhas.records.PontuacaoRelativa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class JogadorService {
         return jogadorRepository.buscarRanking();
     }
 
-    public PontuacaoRecord buscarPontuacaoJogador( String uuid) {
+    public PontuacaoRelativa buscarPontuacaoJogador(String uuid) {
         return jogadorRepository.buscarPontuacaoJogador(uuid);
     }
 }

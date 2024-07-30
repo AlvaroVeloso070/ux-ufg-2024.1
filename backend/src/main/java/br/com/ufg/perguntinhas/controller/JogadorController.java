@@ -2,6 +2,7 @@ package br.com.ufg.perguntinhas.controller;
 
 import java.util.List;
 
+import br.com.ufg.perguntinhas.records.PontuacaoRelativa;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +43,7 @@ public class JogadorController {
     }
 
     @GetMapping("/pontuacao/{uuid}")
-    public ResponseEntity<PontuacaoRecord> buscarPontuacaoJogador(@PathVariable String uuid) {
+    public ResponseEntity<PontuacaoRelativa> buscarPontuacaoJogador(@PathVariable String uuid) {
 
         var pontuacao = jogadorService.buscarPontuacaoJogador(uuid);
 
