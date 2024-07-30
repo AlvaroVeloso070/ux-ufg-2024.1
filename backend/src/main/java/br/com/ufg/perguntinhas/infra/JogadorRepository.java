@@ -16,4 +16,6 @@ public interface JogadorRepository {
     List<PontuacaoRecord> buscarRanking();
 
     PontuacaoRelativa buscarPontuacaoJogador(String uuid);
+
+    Long findRankingByUuidJogador(UUID uuidJogador);
 }

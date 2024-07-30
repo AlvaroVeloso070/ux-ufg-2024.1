@@ -27,4 +27,8 @@ public class JogadorService {
     public PontuacaoRelativa buscarPontuacaoJogador(String uuid) {
         return jogadorRepository.buscarPontuacaoJogador(uuid);
     }
+
+    public Long findRankingByUuidJogador(UUID uuidJogador) {
+        return jogadorRepository.findRankingByUuidJogador(uuidJogador);
+    }
 }

@@ -43,7 +43,9 @@ export class RankingIndexComponent implements OnInit, AfterViewInit {
 
       this.ranking = new_ranking;
       this.currentPlayer = this.ranking.find(p => p.uuid === player.uuid) || { uuid: '', nickname: player.nome, score: Math.round(player.pontuacao) };
-      this.playerPosition = this.ranking.findIndex(p => p.uuid === this.currentPlayer.uuid) + 1;
+      this._playerService.getPlayerRanking(this.currentPlayer.uuid).subscribe(position => {
+        this.playerPosition = position;
+      });
     });
   }
 

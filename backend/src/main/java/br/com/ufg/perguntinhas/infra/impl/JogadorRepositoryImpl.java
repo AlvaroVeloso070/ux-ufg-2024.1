@@ -60,4 +60,9 @@ public class JogadorRepositoryImpl implements JogadorRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public Long findRankingByUuidJogador(UUID uuidJogador) {
+        return jogadorDataRepository.findRankingByUuidJogador(uuidJogador);
+    }
 }

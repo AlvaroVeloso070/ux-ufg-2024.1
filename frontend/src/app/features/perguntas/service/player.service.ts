@@ -18,4 +18,8 @@ export class PlayerService {
   getRanking(): Observable<PlayerResponse[]> {
     return this.http.get<PlayerResponse[]>(`${this.apiUrl}/jogador/pontuacao`);
   }
+
+  getPlayerRanking(uuid: string | undefined): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/jogador/ranking/${uuid}`);
+  }
 }

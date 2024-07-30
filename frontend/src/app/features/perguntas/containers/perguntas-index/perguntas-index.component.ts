@@ -157,7 +157,9 @@ export class PerguntasIndexComponent implements OnInit {
 
   getRanking() {
     this.playerService.getRanking().subscribe(ranking => {
-      this.playerPosition = ranking.findIndex(p => p.uuid === this.currentPlayer.uuid) + 1;
+      this.playerService.getPlayerRanking(this.currentPlayer.uuid).subscribe(position => {
+        this.playerPosition = position;
+      });
       const new_ranking: Player[] = ranking.sort((a, b) => b.pontuacao - a.pontuacao).slice(0, 4).map(item => ({
         uuid: item.uuid,
         nickname: item.nomeJogador,

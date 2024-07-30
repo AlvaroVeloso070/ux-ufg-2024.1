@@ -1,6 +1,7 @@
 package br.com.ufg.perguntinhas.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import br.com.ufg.perguntinhas.records.PontuacaoRelativa;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,6 @@ public class JogadorController {
     @GetMapping("/pontuacao")
     public ResponseEntity<List<PontuacaoRecord>> buscarRanking() {
         return ResponseEntity.ok(jogadorService.buscarRanking());
-
     }
 
     @GetMapping("/pontuacao/{uuid}")
@@ -52,5 +52,10 @@ public class JogadorController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/ranking/{uuid}")
+    public ResponseEntity<Long> findRankingByUuidJogador(@PathVariable String uuid) {
+        return ResponseEntity.ok(jogadorService.findRankingByUuidJogador(UUID.fromString(uuid)));
     }
 }
