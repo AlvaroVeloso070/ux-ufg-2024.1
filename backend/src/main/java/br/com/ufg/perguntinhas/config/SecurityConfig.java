@@ -13,6 +13,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults())
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/static/**").permitAll()
                         .anyRequest().permitAll()
