@@ -33,11 +33,10 @@ export class PerguntasIndexComponent implements OnInit {
   interval: any;
   selectedAnswer: Alternative | null = null;
   feedback: string = '';
-  questionsAnswered: number = 0;
   currentPlayer: Player = { uuid: '', nickname: '', score: 0 };
   playerPosition = 0;
   ranking: Player[] = [];
-
+  defaultTimeLeft = 15;
   public get heartLives(){
     return Array(3).fill(0).map((_, index) => index < this.lives ? 1 : 0);
   }
@@ -74,7 +73,7 @@ export class PerguntasIndexComponent implements OnInit {
         this.checkAnswer(false);
       }
       this.question = pergunta;
-      this.timeLeft = 60;
+      this.timeLeft = this.defaultTimeLeft;
       this.startTimer();
     });
   }
@@ -92,7 +91,6 @@ export class PerguntasIndexComponent implements OnInit {
 
   checkAnswer(correct: boolean, score?: number) {
     clearInterval(this.interval);
-    this.questionsAnswered++;
     if (correct && score) {
       this.score += score;
       this.showFeedbackAnswer('correct', score);
@@ -108,7 +106,7 @@ export class PerguntasIndexComponent implements OnInit {
     setTimeout(() => {
       this.feedback = '';
       this.selectedAnswer = null;
-      if (this.lives > 0 && this.questionsAnswered < 10) {
+      if (this.lives > 0) {
         const player = JSON.parse(localStorage.getItem('player') || '{}');
         this.loadQuestion(player.uuid);
       }
